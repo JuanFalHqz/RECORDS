@@ -1,0 +1,345 @@
+{% extends "index.html" %}
+{% load static %}
+{% block container %}
+<div class="container-fluid">
+    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0">Listado de grabaciones</h3>
+        <div class="d-xxl-flex align-items-xxl-center">
+            <form class="d-xxl-flex align-items-xxl-center">
+                <div>
+                    <div
+                        class="row d-inline-flex d-xxl-flex justify-content-xxl-center align-items-xxl-center">
+                        <div class="col-12 d-flex d-xxl-flex justify-content-center align-items-center">
+                            <div id="myDateRangePickerCustomRanges" data-bs-toggle="tooltip"
+                                title="Permite filtrar la información dado un rango de fecha"></div>
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bss-tooltip=""
+                                type="button" style="max-width: 42px;"
+                                title="Permite buscar la información dado un rango de fecha. Por defecto la información presentada es desde un inicio hasta la actualidad"><i
+                                    class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
+                class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generar Reporte</a>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span>Grabaciones</span></div>
+                                    <div class="text-dark fw-bold h5 mb-0"><span>{{records.count}}</span></div>
+                                </div>
+                                <div class="col-auto"><i class="fab fa-usb fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-success py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-success fw-bold text-xs mb-1">
+                                        <span>Utilidad</span></div>
+                                    <div class="text-dark fw-bold h5 mb-0"><span>$ {{all_utilitie}}</span></div>
+                                </div>
+                                <div class="col-auto"><i
+                                        class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-info py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-info fw-bold text-xs mb-1">
+                                        <span>Clientes</span></div>
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-auto">
+                                            <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{all_customers}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto"><i class="far fa-user fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-warning py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span
+                                            style="--bs-danger: #e74a3b;--bs-danger-rgb: 231,74,59;color: var(--cui-yellow);">Deudas</span>
+                                    </div>
+                                    <div class="text-dark fw-bold h5 mb-0"><span>{{count_deudas}}  
+                                        {% if amount %}
+                                            (${{amount}})
+                                        {% endif %}
+                                        </span></div>
+                                </div>
+                                <div class="col-auto"><i
+                                        class="fas fa-heart-broken fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xl-12 col-xxl-12">
+                    <div class="card shadow">
+                        <div
+                            class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
+                            <div
+                                class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
+                                <div style="width: 50%;">
+                                    <p
+                                        class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
+                                        Grabaciones</p>
+                                </div>
+                                <div
+                                    class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bss-tooltip="" id="add-redord" type="button"
+                                        title="Permite añadir una grabación"
+                                        data-bs-target="#modal-add-record"><i
+                                            class="fas fa-plus"></i></button></div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 text-nowrap">
+                                    <div id="dataTable_length" class="dataTables_length"
+                                        aria-controls="dataTable"><label
+                                            class="form-label">Mostrar&nbsp;<select
+                                                class="d-inline-block form-select form-select-sm">
+                                                <option value="10" selected="">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>&nbsp;</label></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter">
+                                        <label class="form-label"><input type="search"
+                                                class="form-control form-control-sm"
+                                                aria-controls="dataTable" placeholder="Buscar"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive table mt-2" id="dataTable-1" role="grid"
+                                aria-describedby="dataTable_info">
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Clientes</th>
+                                            <th>Costo</th>
+                                            <th>Anotación</th>
+                                            <th>Operaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for record in records %}
+                                        <tr class="text-start" style="/*padding: 0px;*/">
+                                            <td class="align-items-xxl-center"><img
+                                                    class="rounded-circle me-2" width="30" height="30"
+                                                    src="{% static 'assets/img/avatars/avatar1.jpeg' %}">{{record.customer.name}}<a
+                                                    class="btn btn-secondary btn-sm"
+                                                    href="customer_detail.html"
+                                                    style="margin-left: 5px;"><i
+                                                        class="far fa-eye"></i></a></td>
+                                            <td>{{record.price}}</td>
+                                            <td><button class="btn btn-primary btn-sm"
+                                                    id="{{record.anotation.pk}}"
+                                                    data-bs-toggle="modal" data-bss-tooltip=""
+                                                    type="button"
+                                                    data-bs-target="#modal-show-annotation"
+                                                    title="Permite mostrar los elementos de la nota"><i
+                                                        class="far fa-eye"></i></button></td>
+                                            <td><button class="btn btn-primary btn-sm"
+                                                    data-bs-toggle="modal" data-bss-tooltip=""
+                                                    type="button" style="margin-right: 5px;"
+                                                    title="Permite editar los atributos de una grabación"
+                                                    data-bs-target="#modal-add-record"><i
+                                                        class="fas fa-edit"></i></button><button
+                                                    class="btn btn-primary btn-sm"
+                                                    data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                    type="button" style="margin-right: 5px;"
+                                                    title="Permite mostrar los detalles de una grabación"><i
+                                                        class="fas fa-eye"></i></button></td>
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                        
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Clientes</strong></td>
+                                            <td><strong>Costo</strong></td>
+                                            <td><strong>Anotación</strong><br></td>
+                                            <td><strong>Operaciones</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 align-self-center">
+                                    <p id="dataTable_info" class="dataTables_info" role="status"
+                                        aria-live="polite">Mostrando 1 a 10 de 27</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <nav
+                                        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                        <ul class="pagination">
+                                            <li class="page-item disabled"><a class="page-link"
+                                                    aria-label="Previous" href="#"><span
+                                                        aria-hidden="true">«</span></a></li>
+                                            <li class="page-item active"><a class="page-link"
+                                                    href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" aria-label="Next"
+                                                    href="#"><span aria-hidden="true">»</span></a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" tabindex="-1" id="modal-show-annotation">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h2 class="modal-title">Nota</h2><button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form>
+                                                                            <div>
+                                                                                <div class="row" style="margin-right: 0px;margin-left: 0;margin-bottom: 20px;">
+                                                                                    <div class="col">
+                                                                                        <div><label class="form-label"><strong>A borrar</strong></label><textarea
+                                                                                                class="form-control" data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                                                                title="Anote los archivos a borrar"
+                                                                                                ></textarea></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row" style="margin-right: 0;margin-left: 0;">
+                                                                                    <div class="col">
+                                                                                        <div><label class="form-label"><strong>A grabar</strong></label><textarea
+                                                                                                class="form-control" data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                                                                title="Anote los archivos a grabar"></textarea></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer"><button class="btn btn-primary" type="button"><i
+                                                                                class="fas fa-save"></i></button></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+<div class="modal fade text-start" role="dialog" tabindex="-1" id="modal-add-record">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Nueva Grabación</h4><button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3"><label class="form-label"
+                                    for="username"><strong>Cliente</strong></label>
+                                <div class="d-xxl-flex align-items-xxl-center"><select class="form-select"
+                                        data-bs-toggle="tooltip" data-bss-tooltip="" title="Clientes del sistema">
+                                        <option value="Pedro" selected="">Pedro</option>
+                                        <option value="Jorge">Jorge</option>
+                                        <option value="Mabel">Mabel</option>
+                                    </select><button class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bss-tooltip="" type="button" title="Permite añadir un cliente"
+                                        data-bs-target="#modal-add-customer"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3"><label class="form-label"
+                                    for="first_name"><strong>Precio</strong><br></label><input class="form-control"
+                                    type="text" data-bs-toggle="tooltip" data-bss-tooltip="" id="first_name"
+                                    placeholder="Por ej. 100" name="price" title="Precio de la grabación"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col d-xxl-flex">
+                            <div class="mb-3">
+                                <div
+                                    class="form-check form-switch d-xxl-flex justify-content-xxl-center align-items-xxl-center">
+                                    <input class="form-check-input" type="checkbox" id="formCheck-1"><label
+                                        class="form-check-label" for="formCheck-1"><strong>&nbsp;No
+                                            paga</strong></label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div style="padding: 5px;border-style: solid;border-color: rgb(234,236,244);"><label
+                                    class="form-label" style="font-size: 18px;"><strong>Anotaciones
+                                        (Opcional)</strong></label>
+                                <div>
+                                    <div class="row" style="margin-right: 0px;margin-left: 0;margin-bottom: 20px;">
+                                        <div class="col">
+                                            <div><label class="form-label"><strong>A
+                                                        borrar</strong></label><textarea class="form-control"
+                                                    data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                    title="Anote los archivos a borrar"></textarea></div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-right: 0;margin-left: 0;">
+                                        <div class="col">
+                                            <div><label class="form-label"><strong>A
+                                                        grabar</strong></label><textarea class="form-control"
+                                                    data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                    title="Anote los archivos a grabar"></textarea></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer"><button class="btn btn-light" data-bs-toggle="tooltip" data-bss-tooltip=""
+                    type="button" data-bs-dismiss="modal" title="Cancelar el guardado"><i
+                        class="fas fa-window-close"></i></button><button class="btn btn-primary"
+                    data-bs-toggle="tooltip" data-bss-tooltip="" type="button" title="Guarda la grabación"><i
+                        class="fas fa-save"></i></button></div>
+        </div>
+    </div>
+</div>
+{% endblock container %}
+
+                
+            
+    
