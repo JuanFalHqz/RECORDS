@@ -13,11 +13,14 @@ ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'records_manager',
+        'USER': 'postgres',
+        'PASSWORD': '1',
+        'HOST': 'localhost',  # O la dirección de tu servidor de base de datos
+        'PORT': '5432',  # Por lo general, el puerto predeterminado es 5432
     }
 }
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 

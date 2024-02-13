@@ -1,204 +1,222 @@
 {% extends "index.html" %}
 
 {% block container %}
-        
-            <div class="container-fluid">
-                <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                    <h3 class="text-dark mb-0">Clientes</h3><a
-                        class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
-                            class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generar Reporte</a>
-                </div>
-                <div class="card shadow">
-                    <div class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
-                        <div
-                            class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
-                            <div style="width: 50%;">
-                                <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
-                                    Lisado de clientes</p>
-                            </div>
-                            <div
-                                class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bss-tooltip=""
-                                    id="add-redord" type="button" title="Permite añadir un cliente"
-                                    data-bs-target="#modal-add-customer"><i class="fas fa-plus"></i></button></div>
-                        </div>
+
+    <div class="container-fluid">
+        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-dark mb-0">Clientes</h3><a
+                class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
+                class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generar Reporte</a>
+        </div>
+        <div class="card shadow">
+            <div class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
+                <div
+                        class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
+                    <div style="width: 50%;">
+                        <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
+                            Lisado de clientes</p>
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 text-nowrap">
-                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                                    <label class="form-label">Mostrar&nbsp;<select
-                                            class="d-inline-block form-select form-select-sm">
-                                            <option value="10" selected="">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>&nbsp;</label></div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                                        class="form-label"><input type="search" class="form-control form-control-sm"
-                                            aria-controls="dataTable" placeholder="Buscar"></label></div>
-                            </div>
-                        </div>
-                        <div class="table-responsive table mt-2" id="dataTable" role="grid"
-                            aria-describedby="dataTable_info">
-                            <table class="table my-0" id="dataTable">
-                                <thead>
-                                    <tr>
-                                        <th>Clientes</th>
-                                        <th>Cantidad de grabaciones</th>
-                                        <th>Utilidad generada</th>
-                                        <th>Fecha de unión</th>
-                                        <th>Operaciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr style="/*padding: 0px;*/">
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar1.jpeg">Airi Satou</td>
-                                        <td>22</td>
-                                        <td>24000</td>
-                                        <td>03/11/2020</td>
-                                        <td><button class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
-                                                data-bss-tooltip="" type="button" style="margin-right: 5px;"
-                                                title="Permite editar los atributos de un cliente"><i
-                                                    class="fas fa-edit"></i></button><a data-bs-toggle="tooltip"
-                                                data-bss-tooltip="" class="btn btn-primary btn-sm"
-                                                href="customer_detail.html" style="margin-right: 5px;"
-                                                title="Permite mostrar la información del cliente"><i
-                                                    class="fas fa-eye"></i></a><button
-                                                class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
-                                                data-bss-tooltip="" type="button"
-                                                title="Permite eliminar un cliente" style="margin-right: 5px;"><i
-                                                    class="far fa-trash-alt"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar2.jpeg">Angelica Ramos</td>
-                                        <td>33</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar3.jpeg">Ashton Cox</td>
-                                        <td>2</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar4.jpeg">Bradley Greer</td>
-                                        <td>3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar5.jpeg">Brenden Wagner</td>
-                                        <td>2</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar1.jpeg">Brielle Williamson</td>
-                                        <td>4</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar2.jpeg">Bruno Nash<br></td>
-                                        <td>5</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar3.jpeg">Caesar Vance</td>
-                                        <td>5</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar4.jpeg">Cara Stevens</td>
-                                        <td>5</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td><img class="rounded-circle me-2" width="30" height="30"
-                                                src="assets/img/avatars/avatar5.jpeg">Cedric Kelly</td>
-                                        <td>5</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                        <td>Cell 3</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td><strong>Clientes</strong></td>
-                                        <td><strong>Cantidad de grabaciones</strong></td>
-                                        <td><strong>Utilidad generada</strong><br></td>
-                                        <td><strong>Fecha de unión</strong><br></td>
-                                        <td><strong>Operaciones</strong></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 align-self-center">
-                                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-                                    Mostrando 1 a 10 de 27</p>
-                            </div>
-                            <div class="col-md-6">
-                                <nav
-                                    class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                    <ul class="pagination">
-                                        <li class="page-item disabled"><a class="page-link" aria-label="Previous"
-                                                href="#"><span aria-hidden="true">«</span></a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
-                                                    aria-hidden="true">»</span></a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                    <div
+                            class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bss-tooltip=""
+                                id="add-redord" type="button" title="Permite añadir un cliente"
+                                data-bs-target="#modal-add-customer"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
-        
-<div class="modal fade" role="dialog" tabindex="-1" id="modal-add-customer">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Modal Title</h4><button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 text-nowrap">
+                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                            <label class="form-label">Mostrar&nbsp;<select
+                                    class="d-inline-block form-select form-select-sm">
+                                <option value="10" selected="">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>&nbsp;</label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
+                                class="form-label"><input type="search" class="form-control form-control-sm"
+                                                          aria-controls="dataTable" placeholder="Buscar"></label></div>
+                    </div>
+                </div>
+                <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                     aria-describedby="dataTable_info">
+                    <table class="table my-0" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>Clientes</th>
+                            <th>Cantidad de grabaciones</th>
+                            <th>Utilidad generada</th>
+                            <th>Fecha de unión</th>
+                            <th>Operaciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr style="/*padding: 0px;*/">
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar1.jpeg">Airi Satou
+                            </td>
+                            <td>22</td>
+                            <td>24000</td>
+                            <td>03/11/2020</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
+                                        data-bss-tooltip="" type="button" style="margin-right: 5px;"
+                                        title="Permite editar los atributos de un cliente"><i
+                                        class="fas fa-edit"></i></button>
+                                <a data-bs-toggle="tooltip"
+                                   data-bss-tooltip="" class="btn btn-primary btn-sm"
+                                   href="customer_detail.html" style="margin-right: 5px;"
+                                   title="Permite mostrar la información del cliente"><i
+                                        class="fas fa-eye"></i></a>
+                                <button
+                                        class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
+                                        data-bss-tooltip="" type="button"
+                                        title="Permite eliminar un cliente" style="margin-right: 5px;"><i
+                                        class="far fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar2.jpeg">Angelica Ramos
+                            </td>
+                            <td>33</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar3.jpeg">Ashton Cox
+                            </td>
+                            <td>2</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar4.jpeg">Bradley Greer
+                            </td>
+                            <td>3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar5.jpeg">Brenden Wagner
+                            </td>
+                            <td>2</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar1.jpeg">Brielle Williamson
+                            </td>
+                            <td>4</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar2.jpeg">Bruno Nash<br></td>
+                            <td>5</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar3.jpeg">Caesar Vance
+                            </td>
+                            <td>5</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar4.jpeg">Cara Stevens
+                            </td>
+                            <td>5</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <td><img class="rounded-circle me-2" width="30" height="30"
+                                     src="assets/img/avatars/avatar5.jpeg">Cedric Kelly
+                            </td>
+                            <td>5</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td><strong>Clientes</strong></td>
+                            <td><strong>Cantidad de grabaciones</strong></td>
+                            <td><strong>Utilidad generada</strong><br></td>
+                            <td><strong>Fecha de unión</strong><br></td>
+                            <td><strong>Operaciones</strong></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 align-self-center">
+                        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
+                            Mostrando 1 a 10 de 27</p>
+                    </div>
+                    <div class="col-md-6">
+                        <nav
+                                class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                            <ul class="pagination">
+                                <li class="page-item disabled"><a class="page-link" aria-label="Previous"
+                                                                  href="#"><span aria-hidden="true">«</span></a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
+                                        aria-hidden="true">»</span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3"><label class="form-label" for=""><strong>Nombre de
-                                cliente</strong><br></label><input class="form-control" type="text"
-                            id="customer-name" placeholder="Nombre de cliente" name="customer-name"></div>
-                </form>
-            </div>
-            <div class="modal-footer"><button class="btn btn-primary" type="button"><i
-                        class="fas fa-save"></i></button></div>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-add-customer">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Title</h4>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3"><label class="form-label" for=""><strong>Nombre de
+                            cliente</strong><br></label><input class="form-control" type="text"
+                                                               id="customer-name" placeholder="Nombre de cliente"
+                                                               name="customer-name"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button"><i
+                            class="fas fa-save"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock container %}

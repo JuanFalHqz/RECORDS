@@ -1,0 +1,202 @@
+{% extends 'layout/create.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'assets/select2/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/select2/css/select2.main.css' %}">
+
+    <script src="{% static 'assets/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
+{% block container %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                {% if message.tags == 'error' %}
+                    <script>
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: '{{message}}',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    </script>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="row d-flex align-content-center justify-content-center">
+        <div class="col-sm-12 col-lg-6 col-xl-4">
+            <div class="card shadow">
+                <div class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
+                    <div class="">
+                        <div>
+                            <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
+                                Nueva grabación</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="record-form" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label"
+                                           for="username">
+                                        <strong>Cliente</strong>
+                                    </label>
+                                    <div class="d-flex align-items-center">
+                                        {{ form.customer }}
+                                        <button id="btn-modal-add-customer-opener" class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bss-tooltip="" type="button" title="Permite añadir un cliente"
+                                                data-bs-target="#modal-add-customer"><i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label"
+                                           for="first_name">
+                                        <strong>Precio</strong><br>
+                                    </label>
+                                    {{ form.price }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col d-xxl-flex">
+                                <div class="mb-3">
+                                    <div class="form-check form-switch d-xxl-flex justify-content-xxl-center align-items-xxl-center">
+                                        {{ form.is_debtor }}
+                                        <label class="form-check-label" for="formCheck-1"><strong>&nbsp;No
+                                            paga</strong></label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label"
+                                           for="first_name">
+                                        <strong>Descripción</strong><br>
+                                    </label>
+                                    {{ form.description }}
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="url_back" name="url">
+                        <br>
+                        <div class="modal-footer">
+                            <a onclick="history.back();"
+                               class="btn btn-light"
+                               role="button"
+                               title="Cancelar el guardado">
+                                <i class="fas fa-window-close"></i>
+                            </a>
+                            <button class="btn btn-primary"
+                                    type="submit"
+                                    title="Guarda la grabación"><i
+                                    class="fas fa-save"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'layout/modals/modal-add-customer.html' %}
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'assets/js/forms_and_validations.js' %}"></script>
+    <script src="{% static 'assets/select2/js/select2.js' %}"></script>
+    <script src="{% static 'assets/select2/js/select2.js' %}"></script>
+    <script>
+        $("#single-select-field").select2({
+            theme: "bootstrap-5",
+            placeholder: $(this).data('placeholder'),
+        });
+        $("#record-form > div:nth-child(2) > div > div > div > span").attr('style', 'width:100%;');
+
+        $('#url_back').val(document.referrer)
+
+
+        $('#errorMessages').hide()
+        $('#record-form').on('submit', function (event) {
+            if (!validate_add_record_form()) {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        $('#customer-form').on('submit', function (event) {
+            $('#errors').remove()
+            //let table = $('#dataTable').DataTable();
+            //Esto permite enviar imágenes o files
+            let form = $(this)[0];  // Obtener el formulario por su ID
+            let formData = new FormData(form);  // Crear un objeto FormData con los datos del formulario
+            event.preventDefault();
+
+            if (validate_add_customer_form()) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'customer_create' %}",  // Ruta de la vista que manejará la solicitud AJAX
+                    processData: false,  // Evitar que jQuery procese los datos
+                    contentType: false,  // Evitar que jQuery establezca el tipo de contenido
+                    data: formData,
+                    success: function (response) {
+                        $('#btn-close-modal-add-customer').click();
+                        if (response.success) {
+                            // Notificar de la creación
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
+                            // Añadir el cliente al select de manera dinámica
+                            let option = '<option value="' + response.data.pk + '">' + response.data.name + '</option>'
+                            let ssf = $('#single-select-field')
+                            ssf.append(option)
+                            // Seleccionar al cliente
+                            ssf.val(response.data.pk);
+
+                        }
+                    },
+                    error: function (xhr) {
+                        let response = JSON.parse(xhr.responseText)
+                        if (!response.success) {
+                            let errors = response.errors;
+                            let errorMessages = ' Existieron errores: <br>';
+                            for (let key in errors) {
+                                errorMessages += '\t' + key + ': ';
+                                errors[key].forEach(function (error) {
+                                    errorMessages += error.message + '<br>';
+                                });
+                            }
+                            $('#customer-form').append('<div class="alert alert-danger" id="errors_backend">' + errorMessages + '</div>')
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#modal-add-customer').on('hidden.bs.modal', function () {
+            // Aquí puedes realizar las acciones que necesites al cerrarse el modal
+            $(this).find('input').not('[name="csrfmiddlewaretoken"]').val('');
+            $(this)
+                .find('textarea')
+                .val('')
+                .end();
+            $('#preview').remove()
+            $('#error_name').remove()
+            $('#error_mobile').remove()
+            $('#errors_backend').remove()
+        });
+    </script>
+{% endblock %}

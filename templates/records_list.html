@@ -1,343 +1,402 @@
 {% extends "index.html" %}
 {% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'assets/datatable/css/dataTables.bootstrap5.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/datepiker.css' %}">
+    <script src="{% static 'assets/sweetalert2/sweetalert2.js' %}"></script>
+
+{% endblock %}
 {% block container %}
-<div class="container-fluid">
-    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-        <h3 class="text-dark mb-0">Listado de grabaciones</h3>
-        <div class="d-xxl-flex align-items-xxl-center">
-            <form class="d-xxl-flex align-items-xxl-center">
-                <div>
-                    <div
-                        class="row d-inline-flex d-xxl-flex justify-content-xxl-center align-items-xxl-center">
-                        <div class="col-12 d-flex d-xxl-flex justify-content-center align-items-center">
-                            <div id="myDateRangePickerCustomRanges" data-bs-toggle="tooltip"
-                                title="Permite filtrar la información dado un rango de fecha"></div>
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bss-tooltip=""
-                                type="button" style="max-width: 42px;"
-                                title="Permite buscar la información dado un rango de fecha. Por defecto la información presentada es desde un inicio hasta la actualidad"><i
-                                    class="fas fa-search"></i></button>
-                        </div>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                {% if message.tags == 'success' %}
+                    <script>
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: '{{message}}',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    </script>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="container-fluid">
+        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-dark mb-0">Listado de grabaciones</h3>
+            <div class="d-xxl-flex align-items-xxl-center">
+                <div class="row d-inline-flex d-xxl-flex justify-content-xxl-center align-items-xxl-center">
+                    <div class="col-12 d-flex d-xxl-flex justify-content-center align-items-center">
+                        <form method="post" id="form_date">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div id="date_error">
+                                    <div class="col d-flex">
+                                        <div id="myDateRangePickerCustomRanges"></div>
+                                        <button class="btn btn-primary"
+                                                id="btn-search-data"
+                                                type="submit" style="max-width: 42px;"
+                                                title="Permite buscar la información dado un rango de fecha. Por defecto la información presentada es desde un inicio hasta la actualidad">
+                                            <i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </form>
-        </div><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
-                class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generar Reporte</a>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="row">
-                <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2">
-                        <div class="card-body">
-                            <div class="row align-items-center no-gutters">
-                                <div class="col me-2">
-                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
-                                        <span>Grabaciones</span></div>
-                                    <div class="text-dark fw-bold h5 mb-0"><span>{{records.count}}</span></div>
-                                </div>
-                                <div class="col-auto"><i class="fab fa-usb fa-2x text-gray-300"></i>
+            </div>
+        </div>
+
+        <!-- Dashboard header-->
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-start-primary py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                            <span>Grabaciones</span></div>
+                                        <div class="text-dark fw-bold h5 mb-0"><span
+                                                id="records_count_by_date_range">{{ records.count }}</span></div>
+                                    </div>
+                                    <div class="col-auto"><i class="fab fa-usb fa-2x text-gray-300"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-success py-2">
-                        <div class="card-body">
-                            <div class="row align-items-center no-gutters">
-                                <div class="col me-2">
-                                    <div class="text-uppercase text-success fw-bold text-xs mb-1">
-                                        <span>Utilidad</span></div>
-                                    <div class="text-dark fw-bold h5 mb-0"><span>$ {{all_utilitie}}</span></div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-start-success py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-success fw-bold text-xs mb-1">
+                                            <span>Utilidad</span></div>
+                                        <div class="text-dark fw-bold h5 mb-0"><span id="records_utility_by_date_range">$ {{ all_utilitie }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto"><i
+                                            class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                                 </div>
-                                <div class="col-auto"><i
-                                        class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-info py-2">
-                        <div class="card-body">
-                            <div class="row align-items-center no-gutters">
-                                <div class="col me-2">
-                                    <div class="text-uppercase text-info fw-bold text-xs mb-1">
-                                        <span>Clientes</span></div>
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-auto">
-                                            <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{all_customers}}</span>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-start-info py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-info fw-bold text-xs mb-1">
+                                            <span>Clientes</span></div>
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col-auto">
+                                                <div class="text-dark fw-bold h5 mb-0 me-3">
+                                                    <span id="records_customers_by_date_range">{{ all_customers }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-auto"><i class="far fa-user fa-2x text-gray-300"></i>
+                                    <div class="col-auto"><i class="far fa-user fa-2x text-gray-300"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-warning py-2">
-                        <div class="card-body">
-                            <div class="row align-items-center no-gutters">
-                                <div class="col me-2">
-                                    <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span
-                                            style="--bs-danger: #e74a3b;--bs-danger-rgb: 231,74,59;color: var(--cui-yellow);">Deudas</span>
-                                    </div>
-                                    <div class="text-dark fw-bold h5 mb-0"><span>{{count_deudas}}  
-                                        {% if amount %}
-                                            (${{amount}})
-                                        {% endif %}
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-start-warning py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span
+                                                style="--bs-danger: #e74a3b;--bs-danger-rgb: 231,74,59;color: var(--cui-yellow);">Deudas</span>
+                                        </div>
+                                        <div class="text-dark fw-bold h5 mb-0"><span
+                                                id="records_debts_by_date_range">{{ count_deudas }}
+                                            {% if amount %}
+                                                (${{ amount }})
+                                            {% endif %}
                                         </span></div>
+                                    </div>
+                                    <div class="col-auto"><i
+                                            class="fas fa-heart-broken fa-2x text-gray-300"></i></div>
                                 </div>
-                                <div class="col-auto"><i
-                                        class="fas fa-heart-broken fa-2x text-gray-300"></i></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 col-xl-12 col-xxl-12">
-                    <div class="card shadow">
-                        <div
-                            class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
-                            <div
-                                class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
-                                <div style="width: 50%;">
-                                    <p
-                                        class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
-                                        Grabaciones</p>
-                                </div>
-                                <div
-                                    class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bss-tooltip="" id="add-redord" type="button"
-                                        title="Permite añadir una grabación"
-                                        data-bs-target="#modal-add-record"><i
-                                            class="fas fa-plus"></i></button></div>
+        </div>
+
+        <!-- Records Table-->
+        <div class="row">
+            <div class="col-lg-12 col-xl-12 col-xxl-12">
+                <div class="card shadow">
+                    <div class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
+                        <div class="d-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
+                            <div style="width: 50%;">
+                                <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
+                                    {{ text_header }}</p>
                             </div>
+                            <div class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end"></div>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length"
-                                        aria-controls="dataTable"><label
-                                            class="form-label">Mostrar&nbsp;<select
-                                                class="d-inline-block form-select form-select-sm">
-                                                <option value="10" selected="">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>&nbsp;</label></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter">
-                                        <label class="form-label"><input type="search"
-                                                class="form-control form-control-sm"
-                                                aria-controls="dataTable" placeholder="Buscar"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="table-responsive table mt-2" id="dataTable-1" role="grid"
-                                aria-describedby="dataTable_info">
-                                <table class="table my-0" id="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Clientes</th>
-                                            <th>Costo</th>
-                                            <th>Anotación</th>
-                                            <th>Operaciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for record in records %}
-                                        <tr class="text-start" style="/*padding: 0px;*/">
-                                            <td class="align-items-xxl-center"><img
-                                                    class="rounded-circle me-2" width="30" height="30"
-                                                    src="{% static 'assets/img/avatars/avatar1.jpeg' %}">{{record.customer.name}}<a
-                                                    class="btn btn-secondary btn-sm"
-                                                    href="customer_detail.html"
-                                                    style="margin-left: 5px;"><i
-                                                        class="far fa-eye"></i></a></td>
-                                            <td>{{record.price}}</td>
-                                            <td><button class="btn btn-primary btn-sm"
-                                                    id="{{record.anotation.pk}}"
-                                                    data-bs-toggle="modal" data-bss-tooltip=""
-                                                    type="button"
-                                                    data-bs-target="#modal-show-annotation"
-                                                    title="Permite mostrar los elementos de la nota"><i
-                                                        class="far fa-eye"></i></button></td>
-                                            <td><button class="btn btn-primary btn-sm"
-                                                    data-bs-toggle="modal" data-bss-tooltip=""
-                                                    type="button" style="margin-right: 5px;"
-                                                    title="Permite editar los atributos de una grabación"
-                                                    data-bs-target="#modal-add-record"><i
-                                                        class="fas fa-edit"></i></button><button
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive table mt-2" id="dataTable-1" role="grid"
+                             aria-describedby="dataTable_info">
+                            <table class="table my-0" id="dataTable">
+                                <thead>
+                                {% block thead %}
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Cliente</th>
+                                        <th>Costo</th>
+                                        <th>Descripción</th>
+                                        <th>Operaciones</th>
+                                    </tr>
+                                {% endblock %}
+                                </thead>
+                                <tbody>
+                                {% for record in records %}
+                                    <tr class="text-start" id="{{ record.pk }}">
+                                        <td>
+                                            {{ record.date_record|date:"d\ \d\e F\ \d\e Y " }}
+                                        </td>
+
+                                        <td class="align-items-xxl-center">
+                                            <span role="button">
+                                                <img src="{{ record.customer.get_photo }}"
+                                                     class="rounded-circle me-2 thumbnail"
+                                                     width="30" height="30" data-bs-toggle="modal"
+                                                     data-bs-target="#imagenModal"
+                                                     data-bss-tooltip=""
+                                                     data-img="{{ record.customer.get_photo }}"
+                                                     alt="customer">
+                                            </span> {{ record.customer.name }}
+                                            <a class="btn btn-secondary btn-sm"
+                                               href="{% url 'detail_customers' record.customer.pk %}"
+                                               style="margin-left: 5px;"><i
+                                                    class="far fa-eye"></i></a></td>
+                                        <td>
+                                            {% if record.is_debtor %}
+                                                <span class="badge bg-danger"
+                                                      title="Esta grabación aún no se ha pagado">
+                                                            {{ record.price }}
+                                                        </span>
+                                            {% else %}
+                                                <span class="align-content-center text-center">
+                                                            {{ record.price }}
+                                                        </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if record.description %}
+                                                <button class="btn btn-primary btn-sm annotations"
+                                                        id=""
+                                                        data-bs-toggle="modal" data-bss-tooltip=""
+                                                        type="button"
+                                                        data-bs-target="#modal-show-annotation"
+                                                        title="Permite mostrar los elementos de la descripción"
+                                                        data-description="{{ record.description }}"><i
+                                                        class="far fa-eye"></i></button>
+
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'record_update' record.pk %}"
+                                               class="btn btn-primary btn-sm"
+                                               role="button" style="margin-right: 5px;"
+                                               title="Permite editar los atributos de una grabación"><i
+                                                    class="fas fa-edit"></i></a>
+                                            <button
                                                     class="btn btn-primary btn-sm"
                                                     data-bs-toggle="tooltip" data-bss-tooltip=""
                                                     type="button" style="margin-right: 5px;"
                                                     title="Permite mostrar los detalles de una grabación"><i
-                                                        class="fas fa-eye"></i></button></td>
-                                        </tr>
-                                        {% endfor %}
-                                        
-                                        
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td><strong>Clientes</strong></td>
-                                            <td><strong>Costo</strong></td>
-                                            <td><strong>Anotación</strong><br></td>
-                                            <td><strong>Operaciones</strong></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <p id="dataTable_info" class="dataTables_info" role="status"
-                                        aria-live="polite">Mostrando 1 a 10 de 27</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <nav
-                                        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                        <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link"
-                                                    aria-label="Previous" href="#"><span
-                                                        aria-hidden="true">«</span></a></li>
-                                            <li class="page-item active"><a class="page-link"
-                                                    href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" aria-label="Next"
-                                                    href="#"><span aria-hidden="true">»</span></a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
+                                                    class="fas fa-eye"></i></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td><strong>Fecha</strong></td>
+                                    <td><strong>Cliente</strong></td>
+                                    <td><strong>Costo</strong></td>
+                                    <td><strong>Descripción</strong><br></td>
+                                    <td><strong>Operaciones</strong></td>
+                                </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" role="dialog" tabindex="-1" id="modal-show-annotation">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h2 class="modal-title">Nota</h2><button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form>
-                                                                            <div>
-                                                                                <div class="row" style="margin-right: 0px;margin-left: 0;margin-bottom: 20px;">
-                                                                                    <div class="col">
-                                                                                        <div><label class="form-label"><strong>A borrar</strong></label><textarea
-                                                                                                class="form-control" data-bs-toggle="tooltip" data-bss-tooltip=""
-                                                                                                title="Anote los archivos a borrar"
-                                                                                                ></textarea></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row" style="margin-right: 0;margin-left: 0;">
-                                                                                    <div class="col">
-                                                                                        <div><label class="form-label"><strong>A grabar</strong></label><textarea
-                                                                                                class="form-control" data-bs-toggle="tooltip" data-bss-tooltip=""
-                                                                                                title="Anote los archivos a grabar"></textarea></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                    <div class="modal-footer"><button class="btn btn-primary" type="button"><i
-                                                                                class="fas fa-save"></i></button></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-<div class="modal fade text-start" role="dialog" tabindex="-1" id="modal-add-record">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Nueva Grabación</h4><button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3"><label class="form-label"
-                                    for="username"><strong>Cliente</strong></label>
-                                <div class="d-xxl-flex align-items-xxl-center"><select class="form-select"
-                                        data-bs-toggle="tooltip" data-bss-tooltip="" title="Clientes del sistema">
-                                        <option value="Pedro" selected="">Pedro</option>
-                                        <option value="Jorge">Jorge</option>
-                                        <option value="Mabel">Mabel</option>
-                                    </select><button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bss-tooltip="" type="button" title="Permite añadir un cliente"
-                                        data-bs-target="#modal-add-customer"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3"><label class="form-label"
-                                    for="first_name"><strong>Precio</strong><br></label><input class="form-control"
-                                    type="text" data-bs-toggle="tooltip" data-bss-tooltip="" id="first_name"
-                                    placeholder="Por ej. 100" name="price" title="Precio de la grabación"></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col d-xxl-flex">
-                            <div class="mb-3">
-                                <div
-                                    class="form-check form-switch d-xxl-flex justify-content-xxl-center align-items-xxl-center">
-                                    <input class="form-check-input" type="checkbox" id="formCheck-1"><label
-                                        class="form-check-label" for="formCheck-1"><strong>&nbsp;No
-                                            paga</strong></label></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div style="padding: 5px;border-style: solid;border-color: rgb(234,236,244);"><label
-                                    class="form-label" style="font-size: 18px;"><strong>Anotaciones
-                                        (Opcional)</strong></label>
-                                <div>
-                                    <div class="row" style="margin-right: 0px;margin-left: 0;margin-bottom: 20px;">
-                                        <div class="col">
-                                            <div><label class="form-label"><strong>A
-                                                        borrar</strong></label><textarea class="form-control"
-                                                    data-bs-toggle="tooltip" data-bss-tooltip=""
-                                                    title="Anote los archivos a borrar"></textarea></div>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="margin-right: 0;margin-left: 0;">
-                                        <div class="col">
-                                            <div><label class="form-label"><strong>A
-                                                        grabar</strong></label><textarea class="form-control"
-                                                    data-bs-toggle="tooltip" data-bss-tooltip=""
-                                                    title="Anote los archivos a grabar"></textarea></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer"><button class="btn btn-light" data-bs-toggle="tooltip" data-bss-tooltip=""
-                    type="button" data-bs-dismiss="modal" title="Cancelar el guardado"><i
-                        class="fas fa-window-close"></i></button><button class="btn btn-primary"
-                    data-bs-toggle="tooltip" data-bss-tooltip="" type="button" title="Guarda la grabación"><i
-                        class="fas fa-save"></i></button></div>
-        </div>
-    </div>
-</div>
+    {% include 'layout/modals/show_image.html' %}
+    {% include 'layout/modals/modal-show-descriptions.html' %}
+    <script src="{% static 'assets/js/jquery-3.7.0.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/jquery.dataTable.min.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/js/snippets.js' %}"></script>
+    <script src="{% static 'assets/js/table.js' %}"></script>
+    <script src="{% static 'assets/js/forms_and_validations.js' %}"></script>
+
+    <script>
+        hover_function();
+        const table = new DataTable('#dataTable', {
+            language: {
+                info: 'Mostrando página _PAGE_ de _PAGES_',
+                infoEmpty: 'No existen registros a mostrar',
+                infoFiltered: '(Buscado de _MAX_ registros total)',
+                lengthMenu: 'Mostrar _MENU_ registros por página',
+                zeroRecords: 'No existen registros - lo sentimos'
+            },
+            "pageLength": 50,
+        });
+
+        table.on('draw', function () {
+            hover_function();
+            // Realizar cambios después de que se ha pintado o redibujado la tabla
+            /*console.log('La tabla ha sido pintada o redibujada');
+            let tr = $('tr')
+            tr.off('mouseover');
+            tr.off('mouseout');
+            $(this).find('button, a').off('mouseout');
+            console.log('mouseout')
+            $(this).find('button, a').off('mouseover');
+            console.log('mouseover')
+            tr.find('button, a').hide()
+            // Muestra los botones y etiquetas a cuando pasas el puntero por encima de la fila de la tabla
+            tr.hover(
+                function () {
+                    console.log('mouseout1')
+                    $(this).find('button, a').off('mouseout');
+                    console.log('mouseover1')
+                    $(this).find('button, a').off('mouseover');
+                    $(this).find('button, a').toggle();
+                }
+            );*/
+            // Realizar los cambios que necesites aquí
+        });
+
+
+    </script>
+    <script>
+        /////////////////////////////////////
+        // Cargar dinámicamente los modals //
+        /////////////////////////////////////
+        $('#dataTable').on('click', '.thumbnail', function () {
+            $('#imagenGrande').attr('src', $(this).data('img'));
+        });
+        $('#dataTable').on('click', '.annotations', function () {
+            $('#textarea-description').val($(this).data('description'));
+        });
+    </script>
+    <script>
+        function is_format_valid(date) {
+            let regex = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/\d{4}$/;
+            return regex.test(date);
+        }
+
+        function validate_inputs_date_search(date_range_picker_start, date_range_picker_end) {
+            let error_html = "<span id='error_date' style='color: red; font-size: 14px'>Formato de fecha inválido. Debe ser dd/mm/aaaa. Por ejemplo (01/05/1999)</span>"
+
+            if (date_range_picker_start != '' && date_range_picker_end != '') {
+                $('#error_date').remove();
+                if (!is_format_valid(date_range_picker_start) || !is_format_valid(date_range_picker_end)) {
+                    $("#date_error").append(error_html);
+                    return false;
+                }
+                // Fecha proporcionada por el cliente en formato dd/mm/aaaa
+                let start_date_arr = date_range_picker_start.split("/");
+                let start_date = new Date(start_date_arr[2], start_date_arr[1] - 1, start_date_arr[0]);
+                let end_date_arr = date_range_picker_end.split("/");
+                let end_date = new Date(end_date_arr[2], end_date_arr[1] - 1, end_date_arr[0]);
+                if (start_date > end_date) {
+                    // Valida que la fecha inicial no sea mayor a la fecha final
+                    $('#error_date').remove();
+                    $("#date_error").append("<span id='error_date' style='color: red; font-size: 14px'>La fecha inicial debe ser anterior o igual a la fecha final</span>");
+                    return false;
+                }
+                return true;
+            } else if (date_range_picker_start == '' && date_range_picker_end != '') {
+                $('#error_date').remove();
+                //valido solo el segundo
+                if (!is_format_valid(date_range_picker_end)) {
+                    $("#date_error").append(error_html);
+                    return false;
+                }
+                return true;
+            } else if (date_range_picker_start != '' && date_range_picker_end == '') {
+                //valido solo el primero
+                if (!is_format_valid(date_range_picker_start)) {
+                    $("#date_error").append(error_html);
+                    return false
+                }
+                // Fecha proporcionada por el cliente en formato dd/mm/aaaa
+                let partesFechaCliente = date_range_picker_start.split("/");
+                let fechaClienteObjeto = new Date(partesFechaCliente[2], partesFechaCliente[1] - 1, partesFechaCliente[0]);
+                // Fecha actual
+                let fechaActual = new Date();
+                if (fechaClienteObjeto > fechaActual) {
+                    // Valida que la fecha inicial no sea mayor a la fecha actual
+                    $('#error_date').remove();
+                    $("#date_error").append("<span id='error_date' style='color: red; font-size: 14px'>La fecha inicial debe ser anterior a la fecha actual</span>");
+                    return false
+                }
+                return true;
+            } else if (date_range_picker_start == '' && date_range_picker_end == '') {
+                return false
+            }
+        }
+
+        $("#form_date").on('submit', function (e) {
+            // fecha inicial en blanco retorno desde el principio
+            let date_range_picker_start = $("input[name = 'date-range-picker-start-date-myDateRangePickerCustomRanges']").val()
+            let date_range_picker_end = $("input[name = 'date-range-picker-end-date-myDateRangePickerCustomRanges']").val()
+            $('#error_date').remove()
+            e.preventDefault();
+            if (validate_inputs_date_search(date_range_picker_start, date_range_picker_end)) {
+                console.log($(this).serialize())
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "records_search" %}',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        console.log(response)
+                        $("#records_count_by_date_range").html(response.records_count);
+                        $("#records_utility_by_date_range").html(response.utility);
+                        $("#records_customers_by_date_range").html(response.customers_count);
+                        let html_debts = response.debt_count;
+                        if (response.debt_count > 0) {
+                            html_debts += ' ($' + parseFloat(response.debt) + ')';
+                        }
+                        $("#records_debts_by_date_range").html(html_debts);
+                        if (response.data) {
+                            table.clear().draw();
+                            response.data.forEach(function (item) {
+                                table.row.add($(item));
+                            });
+                            table.draw(false)
+                        }
+                    },
+                    error: function (response) {
+                        console.log(response)
+                    }
+                });
+            }
+        })
+
+    </script>
 {% endblock container %}
 
                 

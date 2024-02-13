@@ -1,555 +1,251 @@
-<!DOCTYPE html>
-<html>
+{% extends 'index.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'assets/datatable/css/dataTables.bootstrap5.min.css' %}">
+{% endblock %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Profile - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/styles.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightpick@1.3.4/css/lightpick.min.css">
-</head>
-
-<body id="page-top">
-    <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
-            style="color: rgb(133, 135, 150);">
-            <div class="container-fluid d-flex flex-column p-0"><a
-                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
-                    href="index.html">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>RDM</span></div>
-                </a>
-                <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><i
-                                class="fas fa-tachometer-alt"></i><span>Panel Estadístico</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.html"><i
-                                class="fas fa-user"></i><span>Usuarios</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="records_panel.html"><i
-                                class="fas fa-table"></i><span>Panel de grabación</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="records_list.html"><i
-                                class="fab fa-usb"></i><span>Grabaciones</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><i
-                                class="far fa-user-circle"></i><span>Entrar</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.html"><i
-                                class="fas fa-user-circle"></i><span>Register</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="customers_list.html"><i
-                                class="far fa-user"></i><span>Clientes</span></a></li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"><a class="nav-link" href="estadistics.html"><i
-                                class="fas fa-chart-bar"></i><span>Estadísticas</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="messages.html"><i
-                                class="far fa-envelope"></i><span>Mensajes</span></a></li>
-                </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
-                        id="sidebarToggle" type="button"></button></div>
-            </div>
-        </nav>
-        <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3"
-                            id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                        <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link"
-                                    aria-expanded="false" data-bs-toggle="dropdown" href="#"><i
-                                        class="fas fa-search"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in"
-                                    aria-labelledby="searchDropdown">
-                                    <form class="me-auto navbar-search w-100">
-                                        <div class="input-group"><input class="bg-light form-control border-0 small"
-                                                type="text" placeholder="Search for ...">
-                                            <div class="input-group-append"><button class="btn btn-primary py-0"
-                                                    type="button"><i class="fas fa-search"></i></button></div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item d-xxl-flex justify-content-xxl-center align-items-xxl-center"
-                                style="display: flex;">
-                                <p class="d-flex justify-content-center align-items-center"
-                                    style="text-align: center;font-weight: bold;font-size: 20px;margin-bottom: 0;">
-                                    12/12/2024</p>
-                                <div class="topbar-divider"></div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                        aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
-                                            class="badge bg-danger badge-counter">3+</span><i
-                                            class="fas fa-bell fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a
-                                            class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-primary icon-circle"><i
-                                                        class="fas fa-file-alt text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-success icon-circle"><i
-                                                        class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-warning icon-circle"><i
-                                                        class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your
-                                                    account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All
-                                            Alerts</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                        aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
-                                            class="badge bg-danger badge-counter">7</span><i
-                                            class="fas fa-envelope fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a
-                                            class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle"
-                                                    src="assets/img/avatars/avatar4.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Hi there! I am wondering if you can
-                                                        help me with a problem I've been having.</span></div>
-                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle"
-                                                    src="assets/img/avatars/avatar2.jpeg">
-                                                <div class="status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>I have the photos that you ordered last
-                                                        month!</span></div>
-                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle"
-                                                    src="assets/img/avatars/avatar3.jpeg">
-                                                <div class="bg-warning status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Last month's report looks great, I am
-                                                        very happy with the progress so far, keep up the good
-                                                        work!</span></div>
-                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle"
-                                                    src="assets/img/avatars/avatar5.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is
-                                                        because someone told me that people say this to all dogs, even
-                                                        if they aren't good...</span></div>
-                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All
-                                            Alerts</a>
-                                    </div>
-                                </div>
-                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end"
-                                    aria-labelledby="alertsDropdown"></div>
-                            </li>
-                            <div class="d-none d-sm-block topbar-divider"></div>
-                            <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                        aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
-                                            class="d-none d-lg-inline me-2 text-gray-600 small">Rosa</span><img
-                                            class="border rounded-circle img-profile"
-                                            src="assets/img/avatars/avatar1.jpeg"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                            log</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i
-                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item"></li>
-                        </ul>
-                    </div>
-                </nav>
-                <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Información del cliente <strong>Fulanito Fuentes Rodríguez</strong></h3>
-                    <div class="row d-xl-flex justify-content-xl-center">
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-start-primary py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1">
-                                                <span>Grabaciones Realizadas</span></div>
-                                            <div class="text-dark fw-bold h5 mb-0"><span>40</span></div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
-                                    </div>
-                                </div>
+{% block container %}
+    <div class="container-fluid">
+        <h3 class="text-dark mb-4">Información del cliente <strong>{{ object.name }}</strong></h3>
+        <div class="row d-xl-flex justify-content-xl-center">
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-start-primary py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                    <span>Grabaciones Realizadas</span></div>
+                                <div class="text-dark fw-bold h5 mb-0"><span>{{ object.record_set.count }}</span></div>
                             </div>
+                            <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
                         </div>
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-start-success py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Utilidad
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-start-success py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Utilidad
                                                     generada</span></div>
-                                            <div class="text-dark fw-bold h5 mb-0"><span>$215,000</span></div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="text-dark fw-bold h5 mb-0"><span>$ {{ object.get_utility }}</span></div>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow border-start-warning py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-warning fw-bold text-xs mb-1">
-                                                <span>Deudas</span></div>
-                                            <div class="text-dark fw-bold h5 mb-0"><span>Posee ($200)</span></div>
-                                        </div>
-                                        <div class="col-auto"><i class="fas fa-heart-broken fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-lg-4">
-                            <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4"
-                                        src="assets/img/dogs/image3.jpeg" width="160" height="160">
-                                    <div>
-                                        <p>Fulanito Fuentes Rodríguez</p>
-                                        <div class="d-xxl-flex justify-content-xxl-center align-items-xxl-center"><i
-                                                class="fab fa-whatsapp" style="margin-right: 3px;"></i><span>+53
-                                                57689543</span><button class="btn btn-success btn-sm" type="button"
-                                                style="margin-left: 10px;"><i class="fas fa-phone-alt"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card shadow">
-                                <div
-                                    class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
-                                    <div
-                                        class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
-                                        <div style="width: 50%;">
-                                            <p
-                                                class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
-                                                Deudas</p>
-                                        </div>
-                                        <div
-                                            class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6 text-nowrap">
-                                            <div id="dataTable_length-1" class="dataTables_length"
-                                                aria-controls="dataTable"><label class="form-label">Mostrar&nbsp;<select
-                                                        class="d-inline-block form-select form-select-sm"
-                                                        style="width: 70px;">
-                                                        <option value="10" selected="">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>&nbsp;</label></div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="text-md-end dataTables_filter" id="dataTable_filter-1"><label
-                                                    class="form-label"><input type="search"
-                                                        class="form-control form-control-sm" aria-controls="dataTable"
-                                                        placeholder="Buscar"></label></div>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive table mt-2" id="dataTable-2" role="grid"
-                                        aria-describedby="dataTable_info">
-                                        <table class="table my-0" id="dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Fecha</th>
-                                                    <th>Costo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr style="/*padding: 0px;*/">
-                                                    <td>12/11/2023</td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>12/11/2023<br></td>
-                                                    <td>100</td>
-                                                </tr>
-                                                <tr></tr>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td><strong>Fecha</strong></td>
-                                                    <td><strong>Costo</strong></td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 align-self-center">
-                                            <p id="dataTable_info-1" class="dataTables_info" role="status"
-                                                aria-live="polite">Mostrando 1 a 10 de 27</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <nav
-                                                class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                                <ul class="pagination">
-                                                    <li class="page-item disabled"><a class="page-link"
-                                                            aria-label="Previous" href="#"><span
-                                                                aria-hidden="true">«</span></a></li>
-                                                    <li class="page-item active"><a class="page-link" href="#">1</a>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item"><a class="page-link" aria-label="Next"
-                                                            href="#"><span aria-hidden="true">»</span></a></li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="card shadow">
-                                <div
-                                    class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
-                                    <div
-                                        class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
-                                        <div style="width: 50%;">
-                                            <p
-                                                class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
-                                                Grabaciones</p>
-                                        </div>
-                                        <div
-                                            class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6 text-nowrap">
-                                            <div id="dataTable_length" class="dataTables_length"
-                                                aria-controls="dataTable"><label class="form-label">Mostrar&nbsp;<select
-                                                        class="d-inline-block form-select form-select-sm"
-                                                        style="width: 70px;">
-                                                        <option value="10" selected="">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>&nbsp;</label></div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                                                    class="form-label"><input type="search"
-                                                        class="form-control form-control-sm" aria-controls="dataTable"
-                                                        placeholder="Buscar"></label></div>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive table mt-2" id="dataTable-1" role="grid"
-                                        aria-describedby="dataTable_info">
-                                        <table class="table my-0" id="dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Fecha</th>
-                                                    <th>Costo</th>
-                                                    <th>Anotación</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr style="/*padding: 0px;*/">
-                                                    <td>12/11/2023</td>
-                                                    <td>22</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                            data-bss-tooltip="" type="button"
-                                                            data-bs-target="#modal-show-annotation"
-                                                            title="Permite mostrar los elementos de la nota"><i
-                                                                class="far fa-eye"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>12/11/2023<br></td>
-                                                    <td>33</td>
-                                                    <td>-</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Ashton Cox</td>
-                                                    <td>2</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                            data-bss-tooltip="" type="button"
-                                                            data-bs-target="#modal-show-annotation"
-                                                            title="Permite mostrar los elementos de la nota"><i
-                                                                class="far fa-eye"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bradley Greer</td>
-                                                    <td>3</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                            data-bss-tooltip="" type="button"
-                                                            data-bs-target="#modal-show-annotation"
-                                                            title="Permite mostrar los elementos de la nota"><i
-                                                                class="far fa-eye"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Brenden Wagner</td>
-                                                    <td>2</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                            data-bss-tooltip="" type="button"
-                                                            data-bs-target="#modal-show-annotation"
-                                                            title="Permite mostrar los elementos de la nota"><i
-                                                                class="far fa-eye"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Brielle Williamson</td>
-                                                    <td>4</td>
-                                                    <td>-</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bruno Nash<br></td>
-                                                    <td>5</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                            data-bss-tooltip="" type="button"
-                                                            data-bs-target="#modal-show-annotation"
-                                                            title="Permite mostrar los elementos de la nota"><i
-                                                                class="far fa-eye"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Caesar Vance</td>
-                                                    <td>5</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                            data-bss-tooltip="" type="button"
-                                                            data-bs-target="#modal-show-annotation"
-                                                            title="Permite mostrar los elementos de la nota"><i
-                                                                class="far fa-eye"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Cara Stevens</td>
-                                                    <td>5</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                            data-bss-tooltip="" type="button"
-                                                            data-bs-target="#modal-show-annotation"
-                                                            title="Permite mostrar los elementos de la nota"><i
-                                                                class="far fa-eye"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Cedric Kelly</td>
-                                                    <td>5</td>
-                                                    <td>-</td>
-                                                </tr>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td><strong>Fecha</strong></td>
-                                                    <td><strong>Costo</strong></td>
-                                                    <td><strong>Anotación</strong><br></td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 align-self-center">
-                                            <p id="dataTable_info" class="dataTables_info" role="status"
-                                                aria-live="polite">Mostrando 1 a 10 de 27</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <nav
-                                                class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                                <ul class="pagination">
-                                                    <li class="page-item disabled"><a class="page-link"
-                                                            aria-label="Previous" href="#"><span
-                                                                aria-hidden="true">«</span></a></li>
-                                                    <li class="page-item active"><a class="page-link" href="#">1</a>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item"><a class="page-link" aria-label="Next"
-                                                            href="#"><span aria-hidden="true">»</span></a></li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer">
-                <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright © RDM&nbsp;2024</span></div>
-                </div>
-            </footer>
-        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div>
-    <div class="modal fade" role="dialog" tabindex="-1" id="modal-show-annotation">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Nota</h2><button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div>
-                            <div class="row" style="margin-right: 0px;margin-left: 0;margin-bottom: 20px;">
-                                <div class="col">
-                                    <div><label class="form-label"><strong>A borrar</strong></label><textarea
-                                            class="form-control" data-bs-toggle="tooltip" data-bss-tooltip=""
-                                            title="Anote los archivos a borrar"></textarea></div>
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow border-start-warning py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-warning fw-bold text-xs mb-1">
+                                    <span>Deudas</span></div>
+                                <div class="text-dark fw-bold h5 mb-0">
+                                    {% if object.get_debt_count != 0 %}
+                                        ({{ object.get_debt_count }}) ${{ object.get_debt_amount }}
+                                    {% else %}
+                                        <span>No posee</span>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="row" style="margin-right: 0;margin-left: 0;">
-                                <div class="col">
-                                    <div><label class="form-label"><strong>A grabar</strong></label><textarea
-                                            class="form-control" data-bs-toggle="tooltip" data-bss-tooltip=""
-                                            title="Anote los archivos a grabar"></textarea></div>
+                            <div class="col-auto"><i class="fas fa-heart-broken fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-lg-4">
+                <div class="card mb-3">
+                    <div id="personal_info" class="card-body text-center shadow">
+                        <img src="{{ object.get_photo }}"
+                             class="rounded-circle mb-3 mt-4 thumbnail"
+                             width="160" height="160" data-bs-toggle="modal"
+                             data-bs-target="#imagenModal"
+                             data-bss-tooltip=""
+                             data-img="{{ object.get_photo }}"
+                             role="button">
+                        <div>
+                            <p>{{ object.name }}</p>
+                            {% if object.mobile %}
+                                <div class="d-xxl-flex justify-content-xxl-center align-items-xxl-center"><i
+                                        class="fab fa-whatsapp" style="margin-right: 3px;"></i>
+                                    <span>+53 {{ object.mobile }}</span>
+                                    <button class="btn btn-success btn-sm" type="button"
+                                            style="margin-left: 10px;"><i class="fas fa-phone-alt"></i></button>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% if object.get_debt_count != 0 %}
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
+                            <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
+                                <div style="width: 50%;">
+                                    <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
+                                        Deudas</p>
+                                </div>
+                                <div class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="card-body">
+                            <div class="table-responsive table mt-2" id="dataTable-2" role="grid"
+                                 aria-describedby="dataTable_info">
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Costo</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for debt in object.get_debts %}
+                                        <tr style="/*padding: 0px;*/">
+                                            <td>{{ debt.date_record }}</td>
+                                            <td>
+                                            <span class="badge bg-danger"
+                                                  title="Esta grabación aún no se ha pagado">
+                                                {{ debt.price }}
+                                            </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td><strong>Fecha</strong></td>
+                                        <td><strong>Costo</strong></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer"><button class="btn btn-primary" type="button"><i
-                            class="fas fa-save"></i></button></div>
+            {% endif %}
+
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
+                        <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
+                            <div style="width: 50%;">
+                                <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
+                                    Grabaciones</p>
+                            </div>
+                            <div class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive table mt-2" id="dataTable-1" role="grid"
+                             aria-describedby="dataTable_info">
+                            <table class="table my-0" id="dataTable2">
+                                <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Costo</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for record in object.record_set.all %}
+                                    <tr style="/*padding: 0px;*/">
+                                        <td>{{ record.date_record }}</td>
+                                        <td>
+                                            {% if record.is_debtor %}
+                                                <span class="badge bg-danger"
+                                                      title="Esta grabación aún no se ha pagado">
+                                                            {{ record.price }}
+                                                        </span>
+                                            {% else %}
+                                                <span class="align-content-center text-center">
+                                                            {{ record.price }}
+                                                        </span>
+                                            {% endif %}</td>
+                                        <td>
+                                            {% if record.description %}
+                                                <button class="btn btn-primary btn-sm annotations"
+                                                        id=""
+                                                        data-bs-toggle="modal" data-bss-tooltip=""
+                                                        type="button"
+                                                        data-bs-target="#modal-show-annotation"
+                                                        title="Permite mostrar los elementos de la descripción"
+                                                        data-description="{{ record.description }}"><i
+                                                        class="far fa-eye"></i></button>
+
+                                            {% else %}
+                                                <span>
+                                            -
+                                        </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td><strong>Fecha</strong></td>
+                                    <td><strong>Costo</strong></td>
+                                    <td><strong>Descripción</strong><br></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lightpick@1.3.4/lightpick.min.js"></script>
-    <script src="assets/js/script.min.js"></script>
-</body>
+    {% include 'layout/modals/show_image.html' %}
+    {% include 'layout/modals/modal-show-descriptions.html' %}
 
-</html>
+    <script src="{% static 'assets/js/jquery-3.7.0.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/jquery.dataTable.min.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/js/table.js' %}"></script>
+    <script>
+
+        new DataTable('#dataTable', {
+            language: {
+                info: 'Mostrando página _PAGE_ de _PAGES_',
+                infoEmpty: 'No existen registros a mostrar',
+                infoFiltered: '(Buscado de _MAX_ registros total)',
+                lengthMenu: 'Mostrar _MENU_ registros por página',
+                zeroRecords: 'No existen registros - lo sentimos'
+            }
+        });
+        new DataTable('#dataTable2', {
+            language: {
+                info: 'Mostrando página _PAGE_ de _PAGES_',
+                infoEmpty: 'No existen registros a mostrar',
+                infoFiltered: '(Buscado de _MAX_ registros total)',
+                lengthMenu: 'Mostrar _MENU_ registros por página',
+                zeroRecords: 'No existen registros - lo sentimos'
+            }
+        });
+    </script>
+    <script>
+        /////////////////////////////////////
+        // Cargar dinámicamente los modals //
+        /////////////////////////////////////
+        $('#personal_info').on('click', '.thumbnail', function () {
+            let imgSrc = $(this).data('img');
+            $('#imagenGrande').attr('src', imgSrc);
+        });
+        $('#dataTable , #dataTable2 ').on('click', '.annotations', function () {
+            let description = $(this).data('description');
+            $('#textarea-description').val(description);
+        });
+    </script>
+{% endblock %}

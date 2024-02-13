@@ -1,14 +1,28 @@
-.table > :not(caption) > * > *:active {
+.table > tbody > tr:active {
     background-color: var(--bs-purple);
-  }
-  
-  .table > :not(caption) > * > *:hover {
+}
+
+.table > tbody > tr:hover {
     background-color: #eaecf4;
-  }
-  
-  .table > :not(caption) > * > * {
+}
+
+.table > :not(caption) > * > * {
     padding: 2px 2px;
     background-color: var(--bs-table-bg);
     border-bottom-width: 1px;
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
-  }
+}
+
+/* Estilos para ordenadores */
+@media (min-width: 768px) {
+    table {
+        /* Estilos para ordenadores */
+    }
+}
+
+/* Estilos para tablets y teléfonos */
+@media (max-width: 767px) {
+    table {
+        /* Estilos para tablets y teléfonos */
+    }
+}
