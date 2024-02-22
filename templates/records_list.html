@@ -215,12 +215,6 @@
                                                role="button" style="margin-right: 5px;"
                                                title="Permite editar los atributos de una grabación"><i
                                                     class="fas fa-edit"></i></a>
-                                            <button
-                                                    class="btn btn-primary btn-sm"
-                                                    data-bs-toggle="tooltip" data-bss-tooltip=""
-                                                    type="button" style="margin-right: 5px;"
-                                                    title="Permite mostrar los detalles de una grabación"><i
-                                                    class="fas fa-eye"></i></button>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -262,32 +256,9 @@
             },
             "pageLength": 50,
         });
-
         table.on('draw', function () {
             hover_function();
-            // Realizar cambios después de que se ha pintado o redibujado la tabla
-            /*console.log('La tabla ha sido pintada o redibujada');
-            let tr = $('tr')
-            tr.off('mouseover');
-            tr.off('mouseout');
-            $(this).find('button, a').off('mouseout');
-            console.log('mouseout')
-            $(this).find('button, a').off('mouseover');
-            console.log('mouseover')
-            tr.find('button, a').hide()
-            // Muestra los botones y etiquetas a cuando pasas el puntero por encima de la fila de la tabla
-            tr.hover(
-                function () {
-                    console.log('mouseout1')
-                    $(this).find('button, a').off('mouseout');
-                    console.log('mouseover1')
-                    $(this).find('button, a').off('mouseover');
-                    $(this).find('button, a').toggle();
-                }
-            );*/
-            // Realizar los cambios que necesites aquí
         });
-
 
     </script>
     <script>

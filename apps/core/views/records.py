@@ -70,11 +70,10 @@ class RecordView(View):
             self._all = self._all.filter(date_record__range=(start_date, datetime.now()))
         if not start_date and end_date:
             start_date = self._all.order_by('date_record').first().date_record.date()
-            print(start_date)
             self._all = self._all.filter(
                 date_record__range=(start_date, end_date))
         if not start_date and not end_date:
-            self.__init__()
+            self._all = Record.objects.all()
         return self._all
 
 

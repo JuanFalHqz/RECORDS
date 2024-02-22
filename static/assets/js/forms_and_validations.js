@@ -137,7 +137,7 @@ function validate_add_customer_form() {
 // Acciones generadas por eventos  //
 /////////////////////////////////////
 
-$('#customer-photo').on('change', function (e) {
+$('#customer-photo, #id_photo').on('change', function (e) {
     let file = e.target.files[0]; // Obtiene el archivo seleccionado.
     if (file) {
         $('#preview').remove()
@@ -150,6 +150,7 @@ $('#customer-photo').on('change', function (e) {
         reader.readAsDataURL(file); //Lee el contenido del archivo como una URL de datos.
     }
 });
+
 
 ////////////////////////////////////////////////////
 // Validaciones del formulario buscar grabaciones //

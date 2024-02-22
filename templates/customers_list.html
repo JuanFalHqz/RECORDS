@@ -1,7 +1,29 @@
 {% extends "index.html" %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'assets/datatable/css/dataTables.bootstrap5.min.css' %}">
+    <script src="{% static 'assets/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
 
 {% block container %}
-
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                {% if message.tags == 'success' %}
+                    <script>
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: '{{message}}',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    </script>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <div class="container-fluid">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
             <h3 class="text-dark mb-0">Clientes</h3><a
@@ -14,35 +36,18 @@
                         class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
                     <div style="width: 50%;">
                         <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
-                            Lisado de clientes</p>
+                            Listado de clientes</p>
                     </div>
                     <div
                             class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bss-tooltip=""
-                                id="add-redord" type="button" title="Permite añadir un cliente"
+                                id="add-record" type="button" title="Permite añadir un cliente"
                                 data-bs-target="#modal-add-customer"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6 text-nowrap">
-                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                            <label class="form-label">Mostrar&nbsp;<select
-                                    class="d-inline-block form-select form-select-sm">
-                                <option value="10" selected="">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>&nbsp;</label></div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                                class="form-label"><input type="search" class="form-control form-control-sm"
-                                                          aria-controls="dataTable" placeholder="Buscar"></label></div>
-                    </div>
-                </div>
-                <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                <div class="table-responsive table mt-2" role="grid"
                      aria-describedby="dataTable_info">
                     <table class="table my-0" id="dataTable">
                         <thead>
@@ -55,110 +60,59 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr style="/*padding: 0px;*/">
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar1.jpeg">Airi Satou
-                            </td>
-                            <td>22</td>
-                            <td>24000</td>
-                            <td>03/11/2020</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
-                                        data-bss-tooltip="" type="button" style="margin-right: 5px;"
-                                        title="Permite editar los atributos de un cliente"><i
-                                        class="fas fa-edit"></i></button>
-                                <a data-bs-toggle="tooltip"
-                                   data-bss-tooltip="" class="btn btn-primary btn-sm"
-                                   href="customer_detail.html" style="margin-right: 5px;"
-                                   title="Permite mostrar la información del cliente"><i
-                                        class="fas fa-eye"></i></a>
-                                <button
-                                        class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
-                                        data-bss-tooltip="" type="button"
-                                        title="Permite eliminar un cliente" style="margin-right: 5px;"><i
-                                        class="far fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar2.jpeg">Angelica Ramos
-                            </td>
-                            <td>33</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar3.jpeg">Ashton Cox
-                            </td>
-                            <td>2</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar4.jpeg">Bradley Greer
-                            </td>
-                            <td>3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar5.jpeg">Brenden Wagner
-                            </td>
-                            <td>2</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar1.jpeg">Brielle Williamson
-                            </td>
-                            <td>4</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar2.jpeg">Bruno Nash<br></td>
-                            <td>5</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar3.jpeg">Caesar Vance
-                            </td>
-                            <td>5</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar4.jpeg">Cara Stevens
-                            </td>
-                            <td>5</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <td><img class="rounded-circle me-2" width="30" height="30"
-                                     src="assets/img/avatars/avatar5.jpeg">Cedric Kelly
-                            </td>
-                            <td>5</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                            <td>Cell 3</td>
-                        </tr>
+                        {% for customer in customers %}
+                            <tr>
+                                <td class="align-items-xxl-center">
+                                    <span role="button">
+                                        <img src="{{ customer.get_photo }}"
+                                             class="rounded-circle me-2 thumbnail"
+                                             width="30" height="30" data-bs-toggle="modal"
+                                             data-bs-target="#imagenModal"
+                                             data-bss-tooltip=""
+                                             data-img="{{ customer.get_photo }}"
+                                             alt="customer">
+                                    </span> {{ customer.name }}
+                                </td>
+                                <td>{{ customer.record_set.count }}</td>
+                                <td>
+                                    {% if customer.get_utility %}
+                                        $ {{ customer.get_utility }}
+                                    {% else %}
+                                        $ 0
+                                    {% endif %}
+                                    {% if customer.get_debt_count > 0 %}
+                                        <span class="badge bg-danger" title="Este cliente posee deudas">
+                                            ({{ customer.get_debt_count }}) ${{ customer.get_debt_amount }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ customer.date_join|date:"d\ \d\e F\ \d\e Y " }}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm"
+                                       data-bs-toggle="tooltip"
+                                       href="{% url 'customer_update' customer.pk %}"
+                                       data-bss-tooltip="" role="button" style="margin-right: 5px;"
+                                       title="Permite editar los atributos de un cliente">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a data-bs-toggle="tooltip"
+                                       data-bss-tooltip="" class="btn btn-primary btn-sm"
+                                       href="{% url 'detail_customers' customer.pk %}" style="margin-right: 5px;"
+                                       title="Permite mostrar la información del cliente"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a class="btn btn-danger btn-sm btn-deleted"
+                                       data-bs-toggle="tooltip"
+                                       data-bss-tooltip=""
+                                       role="button"
+                                       style="margin-right: 5px;"
+                                       data-bs-target="#modal-show-annotation"
+                                       data-url="{% url 'customer_delete' customer.pk %}"
+                                       title="Permite eliminar una grabación">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                         <tfoot>
                         <tr>
@@ -171,52 +125,154 @@
                         </tfoot>
                     </table>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 align-self-center">
-                        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-                            Mostrando 1 a 10 de 27</p>
-                    </div>
-                    <div class="col-md-6">
-                        <nav
-                                class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                            <ul class="pagination">
-                                <li class="page-item disabled"><a class="page-link" aria-label="Previous"
-                                                                  href="#"><span aria-hidden="true">«</span></a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
-                                        aria-hidden="true">»</span></a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+    {% include 'layout/modals/show_image.html' %}
+    {% include 'layout/modals/modal-add-customer.html' %}
 
-    <div class="modal fade" role="dialog" tabindex="-1" id="modal-add-customer">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Modal Title</h4>
-                    <button type="button" class="btn-close"
-                            data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3"><label class="form-label" for=""><strong>Nombre de
-                            cliente</strong><br></label><input class="form-control" type="text"
-                                                               id="customer-name" placeholder="Nombre de cliente"
-                                                               name="customer-name"></div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" type="button"><i
-                            class="fas fa-save"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
 
+    <script src="{% static 'assets/js/jquery-3.7.0.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/jquery.dataTable.min.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/js/table.js' %}"></script>
+    <script src="{% static 'assets/js/forms_and_validations.js' %}"></script>
+
+    <script>
+        hover_function();
+        const table = new DataTable('#dataTable', {
+            language: {
+                info: 'Mostrando página _PAGE_ de _PAGES_',
+                infoEmpty: 'No existen registros a mostrar',
+                infoFiltered: '(Buscado de _MAX_ registros total)',
+                lengthMenu: 'Mostrar _MENU_ registros por página',
+                zeroRecords: 'No existen registros - lo sentimos'
+            },
+            "pageLength": 50,
+        });
+
+        table.on('draw', function () {
+            hover_function();
+        });
+
+    </script>
+    <script>
+        /////////////////////////////////////
+        // Cargar dinámicamente los modals //
+        /////////////////////////////////////
+        $('#dataTable').on('click', '.thumbnail', function () {
+            $('#imagenGrande').attr('src', $(this).data('img'));
+        });
+        $('#dataTable').on('click', '.annotations', function () {
+            $('#textarea-description').val($(this).data('description'));
+        });
+    </script>
+    <script>
+        $('#customer-form').on('submit', function (event) {
+            $('#errors').remove()
+            //let table = $('#dataTable').DataTable();
+            //Esto permite enviar imágenes o files
+            let form = $(this)[0];  // Obtener el formulario por su ID
+            let formData = new FormData(form);  // Crear un objeto FormData con los datos del formulario
+            event.preventDefault();
+
+            if (validate_add_customer_form()) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'customer_create' %}",  // Ruta de la vista que manejará la solicitud AJAX
+                    processData: false,  // Evitar que jQuery procese los datos
+                    contentType: false,  // Evitar que jQuery establezca el tipo de contenido
+                    data: formData,
+                    success: function (response) {
+                        $('#btn-close-modal-add-customer').click();
+                        if (response.success) {
+                            console.log(response)
+                            // Notificar de la creación
+                            if (response.new_customer_html) {
+                                table.row.add($(response.new_customer_html)).draw();
+                            }
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            console.log("{% url 'customers' %}")
+                        }
+                    },
+                    error: function (xhr) {
+                        let response = JSON.parse(xhr.responseText)
+                        if (!response.success) {
+                            let errors = response.errors;
+                            let errorMessages = ' Existieron errores: <br>';
+                            for (let key in errors) {
+                                errorMessages += '\t' + key + ': ';
+                                errors[key].forEach(function (error) {
+                                    errorMessages += error.message + '<br>';
+                                });
+                            }
+                            $('#customer-form').append('<div class="alert alert-danger" id="errors_backend">' + errorMessages + '</div>')
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#modal-add-customer').on('hidden.bs.modal', function () {
+            // Aquí puedes realizar las acciones que necesites al cerrarse el modal
+            $(this).find('input').not('[name="csrfmiddlewaretoken"]').val('');
+            $(this)
+                .find('textarea')
+                .val('')
+                .end();
+            $('#preview').remove()
+            $('#error_name').remove()
+            $('#error_mobile').remove()
+            $('#errors_backend').remove()
+        });
+    </script>
+    <script>
+        $('#dataTable').on('click', '.btn-deleted', function () {
+            let element = $(this);
+            let url = $(this).data('url');
+            Swal.fire({
+                title: "Deseas realmente eliminar esta grabación?",
+                showCancelButton: true,
+                confirmButtonText: "Eliminar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    /* Read more about isConfirmed, isDenied below */
+                    $.ajax({
+                        url: url, // Reemplaza con la URL de tu DeleteView
+                        type: 'DELETE',
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'},  // Asegúrate de incluir el token CSRF
+                        success: function (response) {
+                            let currentPage = table.page(); // Obtener la página actual
+                            let row = table.row(element.parents('tr'));
+                            row.remove().draw(false); // Restablecer la estructura de la tabla sin redibujarla
+                            // Volver a la página actual después de la eliminación
+                            table.page(currentPage).draw('page');
+                            // Notificar
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            // Aquí puedes realizar alguna acción adicional después de la eliminación
+                        },
+                        error: function (error) {
+                            console.log(error)
+                            Swal.fire("Error deleting element", "", "error");
+                        }
+                    });
+
+                } else if (result.isDenied) {
+                }
+            });
+            // Resto del código para eliminar la fila y mostrar la confirmación
+        });
+    </script>
 {% endblock container %}

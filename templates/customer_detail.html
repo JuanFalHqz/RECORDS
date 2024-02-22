@@ -27,9 +27,13 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Utilidad
-                                                    generada</span></div>
-                                <div class="text-dark fw-bold h5 mb-0"><span>$ {{ object.get_utility }}</span></div>
+                                <div class="text-uppercase text-success fw-bold text-xs mb-1">
+                                    <span>Utilidad generada</span></div>
+                                {% if object.get_utility %}
+                                    <div class="text-dark fw-bold h5 mb-0"><span>$ {{ object.get_utility }}</span></div>
+                                {% else %}
+                                    <b><span>No posee</span></b>
+                                {% endif %}
                             </div>
                             <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                             </div>
@@ -69,7 +73,7 @@
                              data-bs-target="#imagenModal"
                              data-bss-tooltip=""
                              data-img="{{ object.get_photo }}"
-                             role="button">
+                             role="button" alt="Imágen del cliente">
                         <div>
                             <p>{{ object.name }}</p>
                             {% if object.mobile %}
@@ -215,7 +219,7 @@
     <script src="{% static 'assets/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
     <script src="{% static 'assets/js/table.js' %}"></script>
     <script>
-
+        hover_function()
         new DataTable('#dataTable', {
             language: {
                 info: 'Mostrando página _PAGE_ de _PAGES_',

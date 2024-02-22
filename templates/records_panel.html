@@ -246,32 +246,6 @@
         });
     </script>
     <script>
-        $('#form-update-annotation').on('submit', function (event) {
-            event.preventDefault();
-            let id = $('#annotation-id').val()
-            let url = '/app/annotation/update/' + id
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: $(this).serialize(),
-                success: function (response) {
-                    location.reload()
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    // Actualizar el modal
-                },
-                error: function (response) {
-                    alert('Error al actualizar el producto: ' + JSON.stringify(response.responseJSON.error));
-                }
-            });
-        });
-    </script>
-    <script>
         /////////////////////////////////////
         // Cargar dinámicamente los modals //
         /////////////////////////////////////

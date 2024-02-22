@@ -2,7 +2,7 @@ from django.urls import include, path
 
 from apps.core.views.dashboard import Dashboard
 from apps.core.views.records_panel import RecordsPanel
-from apps.core.views.customer import ListCustomers, DetailCustomer, CreateCustomer
+from apps.core.views.customer import ListCustomers, DetailCustomer, CreateCustomer, UpdateCustomer, DeleteCustomer
 from apps.core.views.records import ListRecords, CreateRecord, UpdateRecord, DeleteRecord, get_records_by_date_range
 from apps.core.views.estadistics import EstadisticView
 
@@ -20,5 +20,7 @@ urlpatterns = [
     path('customers', ListCustomers.as_view(), name='customers'),
     path('customers/<int:pk>', DetailCustomer.as_view(), name='detail_customers'),
     path('customers/create/', CreateCustomer.as_view(), name='customer_create'),
+    path('customers/update/<int:pk>', UpdateCustomer.as_view(), name='customer_update'),
+    path('customers/delete/<int:pk>', DeleteCustomer.as_view(), name='customer_delete'),
 
 ]
