@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.utils import timezone
 from django.views.generic import ListView, View
@@ -6,7 +7,7 @@ from apps.core.views.customer import CustomerView
 from apps.core.views.records import RecordView
 
 
-class RecordsPanel(ListView):
+class RecordsPanel(LoginRequiredMixin, ListView):
     """
     Toda la información es diaria.
 

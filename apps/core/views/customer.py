@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Any
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpRequest
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -12,7 +13,7 @@ from apps.core.forms.customer import CustomerForm
 from apps.core.models import Customer, Record
 
 
-class CustomerView(View):
+class CustomerView(LoginRequiredMixin, View):
     _all = None
     _customer_by_current_day = None
 
@@ -50,7 +51,7 @@ class CustomerView(View):
         return self.get_customer_by_date_range(start_date, end_date).count()
 
 
-class ListCustomers(ListView):
+class ListCustomers(LoginRequiredMixin, ListView):
     template_name = 'customers_list.html'
     queryset = Customer.objects.all()
     _record = None
@@ -72,12 +73,12 @@ class ListCustomers(ListView):
         return context
 
 
-class DetailCustomer(DetailView):
+class DetailCustomer(LoginRequiredMixin, DetailView):
     template_name = 'customer_detail.html'
     model = Customer
 
 
-class CreateCustomer(CreateView):
+class CreateCustomer(LoginRequiredMixin, CreateView):
     template_name = ''
     model = Customer
     form_class = CustomerForm
@@ -95,14 +96,16 @@ class CreateCustomer(CreateView):
             utility = customer.get_utility()
             utility_html = ''
             if utility:
-                utility_html += '$ ' + str(utility)
+                utility_html += '' + str(utility)
             else:
-                utility_html += '$ 0'
+                utility_html += '0'
             get_debt_count = customer.get_debt_count()
             get_debt_count_html = ''
             if get_debt_count > 0:
                 get_debt_count_html += '<span class="badge bg-danger" title="Este cliente posee deudas"> (' + str(
                     customer.get_debt_count()) + ') $' + str(customer.get_debt_amount()) + '</span>'
+            else:
+                get_debt_count_html +='No'
             count_customer_records = ''
             d = customer.record_set.count()
             if customer.record_set.count() > 0:
@@ -116,13 +119,17 @@ class CreateCustomer(CreateView):
                                         'data-img="' + str(
                 customer.get_photo()) + '" alt="customer"> </span>' + customer.name + '</td>' \
                                                                                       '<td>' + str(
-                count_customer_records) + '</td><td>' + str(utility_html) + str(get_debt_count_html) + '</td> ' \
-                                                                                                       '<td>' + str(
-                customer.date_join.strftime("%d de %B de %Y")) + '</td><td>' \
-                                                                 '<button class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bss-tooltip="" type="button" style="margin-right: 5px;" title="Permite editar los atributos de un cliente"><i class="fas fa-edit"></i></button> ' \
-                                                                 '<a data-bs-toggle="tooltip" data-bss-tooltip="" class="btn btn-primary btn-sm" href="/app/customers/' + str(
-                customer.pk) + '" style="margin-right: 5px;" title="Permite mostrar la información del cliente"><i class="fas fa-eye"></i></a> ' \
-                               '<button class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bss-tooltip="" type="button" title="Permite eliminar un cliente" style="margin-right: 5px;"><i class="far fa-trash-alt"></i></button></td></tr>'
+                count_customer_records) + '</td><td>' + str(utility_html) + '</td><td>'+ str(get_debt_count_html)+'' \
+                '</td><td>'+ str(customer.date_join.strftime("%d de %B de %Y")) + '</td>' \
+                ' <td> <a class="btn btn-primary btn-sm" data-bs-toggle="tooltip" href="/app/customers/update/'+str(customer.pk)+'" data-bss-tooltip="" ' \
+                'role="button" style="margin-right: 5px;" title="Permite editar los atributos de un cliente" data-dashlane-rid="1766c5faa4f4706c" ' \
+                'data-form-type="" data-dashlane-label="true"><i class="fas fa-edit"></i></a><a data-bs-toggle="tooltip" ' \
+                'data-bss-tooltip="" class="btn btn-primary btn-sm" href="/app/customers/'+str(customer.pk)+'" style="margin-right: 5px;" ' \
+                'title="Permite mostrar la información del cliente"><i class="fas fa-eye"></i></a>' \
+                '<a class="btn btn-danger btn-sm btn-deleted" data-bs-toggle="tooltip" data-bss-tooltip="" ' \
+                'role="button" style="margin-right: 5px;" data-bs-target="#modal-show-annotation" ' \
+                'data-url="/app/customers/delete/'+str(customer.pk)+'" title="Permite eliminar una grabación" data-dashlane-rid="532a3d6ec4110897" ' \
+                'data-form-type="" data-dashlane-label="true"><i class="fas fa-trash"></i></a></td></tr>'
 
             return JsonResponse(
                 {'success': True, 'message': 'Cliente guardado correctamente', 'data': serialized_customer,
@@ -134,7 +141,7 @@ class CreateCustomer(CreateView):
             return JsonResponse({'success': False, 'errors': errors}, status=400)
 
 
-class UpdateCustomer(UpdateView):
+class UpdateCustomer(LoginRequiredMixin, UpdateView):
     template_name = 'customer/create.html'
     form_class = CustomerForm
     model = Customer
@@ -165,14 +172,22 @@ class UpdateCustomer(UpdateView):
             return super().form_invalid(form)
 
 
-class DeleteCustomer(DeleteView):
+class DeleteCustomer(LoginRequiredMixin, DeleteView):
     model = Customer
     success_url = reverse_lazy("customers")
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.delete()
-        data = {
-            'message': 'Elemento eliminado exitosamente'
-        }
-        return JsonResponse(data)
+        data = ''
+        try:
+            self.object.delete()
+            data = {
+                'message': 'Elemento eliminado exitosamente'
+            }
+            return JsonResponse(data, status=200)
+        except Exception as e:
+            data = {
+                'message': 'El cliente no se puede eliminar porque posee grabaciones registradas en el sistema'
+            }
+            return JsonResponse(data, status=400)
+

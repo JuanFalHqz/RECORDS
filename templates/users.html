@@ -1,0 +1,142 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'assets/datatable/css/dataTables.bootstrap5.min.css' %}">
+    <script src="{% static 'assets/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
+
+{% block container %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                {% if message.tags == 'success' %}
+                    <script>
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: '{{message}}',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    </script>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="container-fluid">
+        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-dark mb-0">Usuarios</h3><a
+                class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
+                class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generar Reporte</a>
+        </div>
+        <div class="card shadow">
+            <div class="card-header flex-column justify-content-center align-items-center flex-wrap py-3">
+                <div
+                        class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center align-items-center align-items-sm-center align-items-md-center justify-content-lg-end align-items-xl-center justify-content-xxl-start align-items-xxl-center">
+                    <div style="width: 50%;">
+                        <p class="text-primary d-flex justify-content-start align-items-center m-0 fw-bold">
+                            Listado de usuarios</p>
+                    </div>
+                    <div
+                            class="d-inline-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-grow-1 justify-content-end align-items-center justify-content-sm-end justify-content-md-end align-items-md-start justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bss-tooltip=""
+                                id="add-record" type="button" title="Permite añadir un cliente"
+                                data-bs-target="#modal-add-customer"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive table mt-2" role="grid"
+                     aria-describedby="dataTable_info">
+                    <table class="table my-0" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Fecha de unión</th>
+                            <th>Operaciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in object_list %}
+                            <tr>
+                                <td class="align-items-xxl-center">
+                                    <span role="button">
+                                        <img src="{{ user.get_photo }}"
+                                             class="rounded-circle me-2 thumbnail"
+                                             width="30" height="30" data-bs-toggle="modal"
+                                             data-bs-target="#imagenModal"
+                                             data-bss-tooltip=""
+                                             data-img="{{ user.get_photo }}"
+                                             alt="customer">
+                                    </span> {{ user.username }}
+                                </td>
+                                <td>{{ user.date_joined }}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm"
+                                       data-bs-toggle="tooltip"
+                                       href="{% url 'customer_update' user.pk %}"
+                                       data-bss-tooltip="" role="button" style="margin-right: 5px;"
+                                       title="Permite editar los atributos de un cliente">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a data-bs-toggle="tooltip"
+                                       data-bss-tooltip="" class="btn btn-primary btn-sm"
+                                       href="{% url 'detail_customers' user.pk %}" style="margin-right: 5px;"
+                                       title="Permite mostrar la información del cliente"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a class="btn btn-danger btn-sm btn-deleted"
+                                       data-bs-toggle="tooltip"
+                                       data-bss-tooltip=""
+                                       role="button"
+                                       style="margin-right: 5px;"
+                                       data-bs-target="#modal-show-annotation"
+                                       data-url="{% url 'customer_delete' user.pk %}"
+                                       title="Permite eliminar una grabación">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td><strong>Usuario</strong></td>
+                            <td><strong>Fecha de unión</strong></td>
+                            <td><strong>Operaciones</strong></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'layout/modals/show_image.html' %}
+    {% include 'layout/modals/modal-add-customer.html' %}
+
+
+    <script src="{% static 'assets/js/jquery-3.7.0.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/jquery.dataTable.min.js' %}"></script>
+    <script src="{% static 'assets/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/js/table.js' %}"></script>
+    <script src="{% static 'assets/js/forms_and_validations.js' %}"></script>
+
+    <script>
+        hover_function()
+        const table = new DataTable('#dataTable', {
+            language: {
+                info: 'Mostrando página _PAGE_ de _PAGES_',
+                infoEmpty: 'No existen registros a mostrar',
+                infoFiltered: '(Buscado de _MAX_ registros total)',
+                lengthMenu: 'Mostrar _MENU_ registros por página',
+                zeroRecords: 'No existen registros - lo sentimos'
+            },
+            "pageLength": 50,
+        });
+
+        table.on('draw', function () {
+            hover_function();
+        });
+
+    </script>
+{% endblock container %}

@@ -22,5 +22,5 @@ from config.settings import base
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', include('apps.core.urls')),
+    path('', include('apps.core.urls')),
 ] + static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)

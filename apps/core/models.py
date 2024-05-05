@@ -1,16 +1,16 @@
-from datetime import datetime
 
 from django.db import models
 # Create your models here.
-from django.db.models import ManyToManyField, Sum
-from django.contrib.auth.models import User
+from django.db.models import Sum
+from django.contrib.auth.models import AbstractUser
+from django.templatetags.static import static
 from django.utils import timezone
 
 from config.settings.base import MEDIA_URL
 
 
 class Customer(models.Model):
-    photo = models.ImageField(upload_to='customers/%d/%m/%Y/', null=True, blank=True)
+    photo = models.ImageField(upload_to='customers/%Y/%m/%d/', null=True, blank=True)
     name = models.CharField(max_length=25, verbose_name='Nombre')
     date_join = models.DateTimeField(auto_now_add=True, )
     mobile = models.BigIntegerField(null=True, blank=True)
@@ -27,7 +27,10 @@ class Customer(models.Model):
         return self.name
 
     def get_photo(self):
-        return str(MEDIA_URL) + (str(self.photo))
+        if self.photo:
+            return str(MEDIA_URL) + (str(self.photo))
+        else:
+            return static('assets/img/avatars/customer.png')
 
     def get_utility(self):
         return self.record_set.aggregate(tp=Sum('price'))['tp']
@@ -63,9 +66,19 @@ class Record(models.Model):
         return f"Grabación de {self.customer.name} de ${self.price}"
 
 
+class CustomUser(AbstractUser):
+    photo = models.ImageField(upload_to='users/%Y/%m/%d/', null=True, blank=True)
+
+    def get_photo(self):
+        if self.photo:
+            return str(MEDIA_URL) + (str(self.photo))
+        else:
+            return static('assets/img/avatars/customer.png')
+
+
 class Message(models.Model):
-    receptor = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='receptor_user')
-    sender = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='sender_user')
+    receptor = models.ForeignKey(CustomUser, on_delete=models.RESTRICT, related_name='receptor_user')
+    sender = models.ForeignKey(CustomUser, on_delete=models.RESTRICT, related_name='sender_user')
     date = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
 

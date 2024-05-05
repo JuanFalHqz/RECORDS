@@ -107,7 +107,15 @@
                 event.preventDefault();
             }
         });
-        $('#id_photo').addClass('')
+        //Quitando elementos del html para que no salgan
+        $('#id_photo').addClass('form-control');
+        let photo_labels = $("#customer-form > div:nth-child(4)")
+        photo_labels.contents().filter(function () {
+            return this.nodeType === 3 && this.nodeValue.trim() === "Actualmente:";
+        }).remove();
+        photo_labels.contents().filter(function () {
+            return this.nodeType === 3 && this.nodeValue.trim() === "Modificar:";
+        }).remove();
 
     </script>
     <script>

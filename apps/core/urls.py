@@ -1,15 +1,29 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import include, path
+from django.views.generic import RedirectView
 
-from apps.core.views.dashboard import Dashboard
+from apps.core.views.dashboard import Dashboard, get_chart
+from apps.core.views.login import LoginViewCustom, CustomLogoutView
 from apps.core.views.records_panel import RecordsPanel
 from apps.core.views.customer import ListCustomers, DetailCustomer, CreateCustomer, UpdateCustomer, DeleteCustomer
 from apps.core.views.records import ListRecords, CreateRecord, UpdateRecord, DeleteRecord, get_records_by_date_range
-from apps.core.views.estadistics import EstadisticView
+from apps.core.views.estadistics import StatisticView
+from apps.core.views.user import UserList
 
 urlpatterns = [
-    path('dashboard', Dashboard.as_view(), name='dashboard'),
-    path('records_panel', RecordsPanel.as_view(), name='records_panel'),
-    path('stadistics', EstadisticView.as_view(), name='stadistics'),
+    path('', RedirectView.as_view(url='dashboard/')),
+
+
+    path('login/', LoginViewCustom.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
+
+    path('usuarios/', UserList.as_view(), name='users'),
+
+
+    path('dashboard/', Dashboard.as_view(), name='dashboard'),
+    path('dashboard/get_chart/', get_chart, name='chart'),
+    path('records_panel/', RecordsPanel.as_view(), name='records_panel'),
+    path('stadistics/', StatisticView.as_view(), name='stadistics'),
 
     path('records', ListRecords.as_view(), name='records'),
     path('records/search/', get_records_by_date_range, name='records_search'),

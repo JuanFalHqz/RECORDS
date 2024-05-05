@@ -1,5 +1,4 @@
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -13,6 +12,7 @@ BASE_APPS = [
     'django.contrib.staticfiles',
 ]
 THIRD_APPS = [
+    'widget_tweaks'
 ]
 LOCAl_APPS = [
     'apps.core',
@@ -95,7 +95,12 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Login
+LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_URL = '/login'
 
+# User System
+AUTH_USER_MODEL = 'core.CustomUser'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

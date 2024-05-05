@@ -3,6 +3,8 @@ from datetime import datetime
 from typing import Any
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.http import HttpRequest, JsonResponse
 from django.urls import reverse_lazy
@@ -14,7 +16,7 @@ from apps.core.models import Record
 from apps.core.views.customer import CustomerView
 
 
-class RecordView(View):
+class RecordView(LoginRequiredMixin, View):
     _all = None
     _records_by_current_day = None
 
@@ -77,7 +79,7 @@ class RecordView(View):
         return self._all
 
 
-class ListRecords(ListView):
+class ListRecords(LoginRequiredMixin, ListView):
     template_name = 'records_list.html'
     _record = RecordView()
     _customers = CustomerView()
@@ -104,6 +106,7 @@ class ListRecords(ListView):
         return context
 
 
+@login_required
 def get_records_by_date_range(request):
     start_date = request.POST.get('date-range-picker-start-date-myDateRangePickerCustomRanges')
     end_date = request.POST.get('date-range-picker-end-date-myDateRangePickerCustomRanges')
@@ -162,7 +165,7 @@ def get_records_by_date_range(request):
     return JsonResponse(response, safe=True)
 
 
-class CreateRecord(CreateView):
+class CreateRecord(LoginRequiredMixin, CreateView):
     template_name = 'records/create.html'
     form_class = RecordForm
     success_url = reverse_lazy('records_panel')
@@ -194,7 +197,7 @@ class CreateRecord(CreateView):
         return super().form_invalid(form)
 
 
-class UpdateRecord(UpdateView):
+class UpdateRecord(LoginRequiredMixin, UpdateView):
     template_name = 'records/create.html'
     form_class = RecordForm
     model = Record
@@ -223,7 +226,7 @@ class UpdateRecord(UpdateView):
             return super().form_invalid(form)
 
 
-class DeleteRecord(DeleteView):
+class DeleteRecord(LoginRequiredMixin, DeleteView):
     model = Record
     success_url = reverse_lazy("records_panel")
 

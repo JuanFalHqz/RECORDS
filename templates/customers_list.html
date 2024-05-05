@@ -54,7 +54,8 @@
                         <tr>
                             <th>Clientes</th>
                             <th>Cantidad de grabaciones</th>
-                            <th>Utilidad generada</th>
+                            <th>Utilidad generada ($)</th>
+                            <th>Posee deudas</th>
                             <th>Fecha de unión</th>
                             <th>Operaciones</th>
                         </tr>
@@ -76,14 +77,22 @@
                                 <td>{{ customer.record_set.count }}</td>
                                 <td>
                                     {% if customer.get_utility %}
-                                        $ {{ customer.get_utility }}
+                                        <span>
+                                            {{ customer.get_utility }}
+                                        </span>
                                     {% else %}
-                                        $ 0
+                                        <span>
+                                            0
+                                        </span>
                                     {% endif %}
+                                </td>
+                                <td>
                                     {% if customer.get_debt_count > 0 %}
                                         <span class="badge bg-danger" title="Este cliente posee deudas">
                                             ({{ customer.get_debt_count }}) ${{ customer.get_debt_amount }}
                                         </span>
+                                    {% else %}
+                                        No
                                     {% endif %}
                                 </td>
                                 <td>{{ customer.date_join|date:"d\ \d\e F\ \d\e Y " }}</td>
@@ -118,7 +127,8 @@
                         <tr>
                             <td><strong>Clientes</strong></td>
                             <td><strong>Cantidad de grabaciones</strong></td>
-                            <td><strong>Utilidad generada</strong><br></td>
+                            <td><strong>Utilidad generada ($)</strong><br></td>
+                            <td><strong>Posee deudas</strong><br></td>
                             <td><strong>Fecha de unión</strong><br></td>
                             <td><strong>Operaciones</strong></td>
                         </tr>
@@ -139,7 +149,7 @@
     <script src="{% static 'assets/js/forms_and_validations.js' %}"></script>
 
     <script>
-        hover_function();
+        hover_function()
         const table = new DataTable('#dataTable', {
             language: {
                 info: 'Mostrando página _PAGE_ de _PAGES_',
@@ -237,7 +247,7 @@
             let element = $(this);
             let url = $(this).data('url');
             Swal.fire({
-                title: "Deseas realmente eliminar esta grabación?",
+                title: "Deseas realmente eliminar este cliente?",
                 showCancelButton: true,
                 confirmButtonText: "Eliminar",
             }).then((result) => {
@@ -263,9 +273,9 @@
                             });
                             // Aquí puedes realizar alguna acción adicional después de la eliminación
                         },
-                        error: function (error) {
-                            console.log(error)
-                            Swal.fire("Error deleting element", "", "error");
+                        error: function (data) {
+                            console.log(data)
+                            Swal.fire('El cliente no se puede eliminar porque posee grabaciones registradas en el sistema', "", "error", data);
                         }
                     });
 
